@@ -20,7 +20,7 @@ SleepyPred is an innovative application that uses artificial intelligence to ana
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/SleepyPred.git
+git clone https://github.com/ShakyaDissanayake/SleepyPred.git
 
 # Navigate to project directory
 cd SleepyPred
@@ -76,9 +76,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-Your Name - [@yourusername](https://twitter.com/yourusername)
+Your Name - [@shakyadissanayake](www.linkedin.com/in/shakyadissanayake)
 
-Project Link: [https://github.com/yourusername/SleepyPred](https://github.com/yourusername/SleepyPred) 🔗
+Project Link: [https://github.com/ShakyaDissanayake/SleepyPred](https://github.com/ShakyaDissanayake/SleepyPred) 🔗
 
 ## 🙏 Acknowledgments
 
