@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import warnings
 import pickle
+import warnings
 
 warnings.filterwarnings('ignore')
 
@@ -98,10 +98,17 @@ def predict_sleep_disorder(data, model, scaler):
     return predicted_disorder, prob_dict
 
 def main():
-    st.title("Sleep Disorder Prediction App")
+    st.title("💤 Sleep Disorder Prediction App 💤")
     st.write("""
     This app predicts the type of sleep disorder a person might have based on their health and lifestyle data.
     Fill in the form below to get a prediction.
+    """)
+    
+    # Medical Disclaimer
+    st.warning("""
+    ⚕️ **MEDICAL DISCLAIMER**: This application is for informational purposes only and is not intended to replace professional medical advice, diagnosis, or treatment. 
+    The predictions provided are based on statistical models and should not be considered as medical diagnoses. 
+    If you suspect you have a sleep disorder or are experiencing sleep-related issues, please consult a qualified healthcare professional for proper evaluation and treatment.
     """)
     
     # Create a form for user input
@@ -109,31 +116,31 @@ def main():
         col1, col2 = st.columns(2)
         
         with col1:
-            gender = st.selectbox("Gender", options=["Male", "Female"])
-            age = st.number_input("Age", min_value=18, max_value=100, value=35)
-            sleep_quality = st.slider("Quality of Sleep (1-10)", min_value=1, max_value=10, value=7)
-            physical_activity = st.slider("Physical Activity Level (minutes per day)", min_value=0, max_value=120, value=60)
-            stress_level = st.slider("Stress Level (1-10)", min_value=1, max_value=10, value=5)
+            gender = st.selectbox("👤 Gender", options=["Male", "Female"])
+            age = st.number_input("🎂 Age", min_value=18, max_value=100, value=35)
+            sleep_quality = st.slider("😴 Quality of Sleep (1-10)", min_value=1, max_value=10, value=7)
+            physical_activity = st.slider("🏃‍♂️ Physical Activity Level (minutes per day)", min_value=0, max_value=120, value=60)
+            stress_level = st.slider("😰 Stress Level (1-10)", min_value=1, max_value=10, value=5)
         
         with col2:
-            bmi_category = st.selectbox("BMI Category", options=["Underweight", "Normal", "Overweight", "Obese"])
-            heart_rate = st.number_input("Heart Rate (bpm)", min_value=40, max_value=200, value=72)
-            daily_steps = st.number_input("Daily Steps", min_value=0, max_value=30000, value=8000)
-            bp_category = st.selectbox("Blood Pressure Category", options=[
+            bmi_category = st.selectbox("⚖️ BMI Category", options=["Underweight", "Normal", "Overweight", "Obese"])
+            heart_rate = st.number_input("❤️ Heart Rate (bpm)", min_value=40, max_value=200, value=72)
+            daily_steps = st.number_input("👣 Daily Steps", min_value=0, max_value=30000, value=8000)
+            bp_category = st.selectbox("🩸 Blood Pressure Category", options=[
                 "Optimal Blood Pressure", 
                 "Elevated Blood Pressure", 
                 "Stage 1 Hypertension", 
                 "Stage 2 Hypertension"
             ])
-            sleep_category = st.selectbox("Sleep Duration Category", options=["Short Sleep", "Optimal Sleep"])
+            sleep_category = st.selectbox("⏰ Sleep Duration Category", options=["Short Sleep", "Optimal Sleep"])
             
-        occupation = st.selectbox("Occupation", options=[
+        occupation = st.selectbox("💼 Occupation", options=[
             "Doctor", "Engineer", "Lawyer", "Manager", "Nurse", 
             "Sales Representative", "Salesperson", "Scientist", 
             "Software Engineer", "Teacher"
         ])
         
-        submit_button = st.form_submit_button("Predict Sleep Disorder")
+        submit_button = st.form_submit_button("🔍 Predict Sleep Disorder")
     
     # When the form is submitted
     if submit_button:
@@ -163,18 +170,18 @@ def main():
             predicted_disorder, probabilities = predict_sleep_disorder(processed_data, model, scaler)
             
             # Display results
-            st.header("Prediction Results")
+            st.header("🔮 Prediction Results")
             
             # Show the predicted disorder with different colors based on severity
             if predicted_disorder == "None":
-                st.success(f"Predicted Sleep Disorder: {predicted_disorder}")
+                st.success(f"Predicted Sleep Disorder: ✅ {predicted_disorder}")
             elif predicted_disorder == "Insomnia":
-                st.warning(f"Predicted Sleep Disorder: {predicted_disorder}")
+                st.warning(f"Predicted Sleep Disorder: ⚠️ {predicted_disorder}")
             else:
-                st.error(f"Predicted Sleep Disorder: {predicted_disorder}")
+                st.error(f"Predicted Sleep Disorder: 🚨 {predicted_disorder}")
             
             # Display probabilities as a bar chart
-            st.subheader("Disorder Probabilities")
+            st.subheader("📊 Disorder Probabilities")
             prob_df = pd.DataFrame({
                 'Disorder': list(probabilities.keys()),
                 'Probability': list(probabilities.values())
@@ -182,46 +189,69 @@ def main():
             st.bar_chart(prob_df.set_index('Disorder'))
             
             # Display additional information based on the prediction
-            st.subheader("What does this mean?")
+            st.subheader("ℹ️ What does this mean?")
             if predicted_disorder == "None":
                 st.write("""
-                Good news! Based on your inputs, our model predicts you don't have a sleep disorder.
+                ✨ Good news! Based on your inputs, our model predicts you don't have a sleep disorder.
                 However, it's still important to maintain good sleep hygiene and healthy habits.
+                
+                🩺 If you're still experiencing sleep issues despite this prediction, please consult with a healthcare provider for a thorough evaluation.
                 """)
             elif predicted_disorder == "Insomnia":
                 st.write("""
-                Our model suggests you might be experiencing insomnia. Insomnia is characterized by difficulty
-                falling asleep, staying asleep, or getting good quality sleep. If you're experiencing these symptoms,
-                consider consulting with a healthcare professional.
+                😴 Our model suggests you might be experiencing insomnia. Insomnia is characterized by difficulty
+                falling asleep, staying asleep, or getting good quality sleep.
+                
+                🩺 **Important:** If you think you have insomnia, please consult with a sleep specialist or healthcare provider for proper diagnosis and treatment options. Effective treatments are available, including cognitive behavioral therapy for insomnia (CBT-I) and other approaches.
                 """)
             else:  # Sleep Apnea
                 st.write("""
-                Our model suggests you might be experiencing sleep apnea. Sleep apnea is a serious sleep disorder
+                😷 Our model suggests you might be experiencing sleep apnea. Sleep apnea is a serious sleep disorder
                 where breathing repeatedly stops and starts during sleep. Common symptoms include loud snoring,
-                gasping for air during sleep, and feeling tired even after a full night's sleep. 
-                Please consult with a healthcare professional for proper diagnosis and treatment.
+                gasping for air during sleep, and feeling tired even after a full night's sleep.
+                
+                🩺 **Important:** If you think you have sleep apnea, please consult with a sleep specialist or healthcare provider immediately for proper diagnosis and treatment. Sleep apnea is a serious condition that requires medical attention and can be treated with CPAP therapy, oral appliances, or other interventions.
                 """)
+            
+            # Additional disclaimer after prediction
+            st.info("""
+            ⚠️ **REMINDER:** This prediction is not a medical diagnosis. The accuracy of this prediction depends on the quality of input data and the limitations of the underlying model. Always seek professional medical advice for sleep-related concerns.
+            """)
     
-    st.sidebar.header("About")
+    st.sidebar.header("ℹ️ About")
     st.sidebar.info("""
     This app uses a machine learning model to predict sleep disorders based on various health and lifestyle factors.
     
     **Note:** This app is for educational purposes only and should not be used as a substitute for professional medical advice.
     """)
     
-    st.sidebar.header("Features Used for Prediction")
+    st.sidebar.header("🔍 Features Used for Prediction")
     st.sidebar.write("""
-    - Gender
-    - Age
-    - Quality of Sleep
-    - Physical Activity Level
-    - Stress Level
-    - BMI Category
-    - Heart Rate
-    - Daily Steps
-    - Blood Pressure Category
-    - Sleep Duration Category
-    - Occupation
+    - 👤 Gender
+    - 🎂 Age
+    - 😴 Quality of Sleep
+    - 🏃‍♂️ Physical Activity Level
+    - 😰 Stress Level
+    - ⚖️ BMI Category
+    - ❤️ Heart Rate
+    - 👣 Daily Steps
+    - 🩸 Blood Pressure Category
+    - ⏰ Sleep Duration Category
+    - 💼 Occupation
+    """)
+    
+    # Additional medical information in sidebar
+    st.sidebar.header("🏥 When to See a Doctor")
+    st.sidebar.write("""
+    Consider consulting a healthcare provider if you experience:
+    
+    - Persistent difficulty falling or staying asleep
+    - Loud snoring with gasping or choking sounds
+    - Excessive daytime sleepiness
+    - Morning headaches
+    - Difficulty concentrating during the day
+    - Irritability or mood changes related to sleep
+    - Waking up feeling unrefreshed
     """)
 
 if __name__ == "__main__":
